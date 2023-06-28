@@ -1,0 +1,70 @@
+<div class="container mt-2">
+  <ng-container *ngIf="customers | async as listCustomers; else failureOrLading ">
+    <div class=" card" *ngIf="customers">
+      <div class="card-header">
+        Customers
+      </div>
+      <div class="card-body">
+        <div *ngIf="searchformGroup">
+          <form [formGroup]="searchformGroup" (ngSubmit)="handleSearchCustomers()">
+            <!--[formGroup]="searchformGroup" helps connect a group of 
+              form fields to a specific part of a webpage -->
+            <div class="input-group">
+              <label class="input-group-text">keyword :</label>
+              <input type="text" formControlName="keyword">
+              <button class="btn btn-info">
+                <i class="bi bi-search"></i>
+              </button>
+            </div>
+          </form>
+          <!--when a form submitted handleSearchCustomers() is executed -->
+        </div>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Name</th>
+              <th>Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!--bari tjouti chi 7wayj mn ts l dom html dirha a travers directive-->
+            <tr *ngFor="let c of customers |async">
+              <!--observable == promise  | async -->
+              <!-- async bach tgiri data li hiya async subscribe -->
+              <!--async It allows programs to continue executing other tasks while
+                 waiting for certain operations to complete-->
+              <td>{{c.id}}</td>
+              <td>{{c.name}}</td>
+              <td>{{c.email}}</td>
+              <td>
+                <button (click)="handleDeleteCustomer(c)" class="btn btn-danger">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+              <td>
+                <button (click)="handleCustomerAccounts(c)" class="btn btn-success">
+                  Accounts
+                </button>
+              </td>
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #failureOrLading>
+    <ng-container *ngIf="errorMessage; else loading">
+      <div class="text-danger">
+        {{errorMessage}}
+      </div>
+    </ng-container>
+    <!--pour le chargement dial data-->
+    <ng-template #loading>
+      Loading...
+    </ng-template>
+  </ng-template>
+
+</div>
